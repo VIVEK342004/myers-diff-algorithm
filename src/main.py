@@ -1,24 +1,21 @@
 from pathlib import Path
 
 
-def myers_diff(a, b):
+def myers_diff(old, new):
     """
-    Compute the shortest edit script between two sequences
-    using Myers' diff algorithm.
+    Compare two sequences using Myers' diff algorithm.
 
-    Returns a list of tuples:
-        (" ", value)  -> unchanged
-        ("-", value)  -> deleted
-        ("+", value)  -> added
+    Returns:
+        A list of tuples:
+        (" ", value) for unchanged items
+        ("-", value) for deleted items
+        ("+", value) for added items
     """
 
-    n = len(a)
-    m = len(b)
+    n = len(old)
+    m = len(new)
 
-    # V stores the furthest-reaching x coordinate
-    # for each diagonal k.
     v = {1: 0}
-
     trace = []
 
     for d in range(n + m + 1):
@@ -28,34 +25,35 @@ def myers_diff(a, b):
 
             if k == -d:
                 x = v.get(k + 1, 0)
+
             elif k == d:
                 x = v.get(k - 1, 0) + 1
+
             elif v.get(k - 1, 0) < v.get(k + 1, 0):
                 x = v.get(k + 1, 0)
+
             else:
                 x = v.get(k - 1, 0) + 1
 
             y = x - k
 
-            while x < n and y < m and a[x] == b[y]:
+            while x < n and y < m and old[x] == new[y]:
                 x += 1
                 y += 1
 
             v[k] = x
 
             if x >= n and y >= m:
-                return _build_edit_script(trace, a, b, d)
+                return build_edit_script(trace, old, new, d)
 
     return []
 
 
-def _build_edit_script(trace, a, b, d):
-    """
-    Reconstruct the edit script from Myers' trace.
-    """
+def build_edit_script(trace, old, new, d):
+    """Reconstruct the edit script from the Myers trace."""
 
-    x = len(a)
-    y = len(b)
+    x = len(old)
+    y = len(new)
 
     result = []
 
@@ -66,10 +64,13 @@ def _build_edit_script(trace, a, b, d):
 
         if k == -depth:
             previous_k = k + 1
+
         elif k == depth:
             previous_k = k - 1
+
         elif v.get(k - 1, 0) < v.get(k + 1, 0):
             previous_k = k + 1
+
         else:
             previous_k = k - 1
 
@@ -77,28 +78,29 @@ def _build_edit_script(trace, a, b, d):
         previous_y = previous_x - previous_k
 
         while x > previous_x and y > previous_y:
-            result.append((" ", a[x - 1]))
+            result.append((" ", old[x - 1]))
             x -= 1
             y -= 1
 
         if x == previous_x:
-            result.append(("+", b[y - 1]))
+            result.append(("+", new[y - 1]))
             y -= 1
+
         else:
-            result.append(("-", a[x - 1]))
+            result.append(("-", old[x - 1]))
             x -= 1
 
     while x > 0 and y > 0:
-        result.append((" ", a[x - 1]))
+        result.append((" ", old[x - 1]))
         x -= 1
         y -= 1
 
     while x > 0:
-        result.append(("-", a[x - 1]))
+        result.append(("-", old[x - 1]))
         x -= 1
 
     while y > 0:
-        result.append(("+", b[y - 1]))
+        result.append(("+", new[y - 1]))
         y -= 1
 
     result.reverse()
@@ -106,33 +108,40 @@ def _build_edit_script(trace, a, b, d):
     return result
 
 
-def diff_files(old_file, new_file):
-    """
-    Compare two text files using Myers diff.
-    """
+def read_file(path):
+    """Read a UTF-8 text file."""
 
-    old_path = Path(old_file)
-    new_path = Path(new_file)
+    return Path(path).read_text(encoding="utf-8").splitlines()
 
-    old_lines = old_path.read_text(encoding="utf-8").splitlines()
-    new_lines = new_path.read_text(encoding="utf-8").splitlines()
+
+def diff_files(old_path, new_path):
+    """Read and compare two text files."""
+
+    old_lines = read_file(old_path)
+    new_lines = read_file(new_path)
 
     return myers_diff(old_lines, new_lines)
 
 
-def print_diff(diff):
-    """
-    Print the diff in a simple readable format.
-    """
+def print_diff(result):
+    """Display the diff in a readable format."""
 
-    for operation, value in diff:
+    for operation, value in result:
         print(f"{operation} {value}")
 
 
-if __name__ == "__main__":
+def main():
     old_file = "samples/paper_old.txt"
     new_file = "samples/paper_new.txt"
 
     result = diff_files(old_file, new_file)
 
+    print(f"Comparing: {old_file}")
+    print(f"      with: {new_file}")
+    print("-" * 50)
+
     print_diff(result)
+
+
+if __name__ == "__main__":
+    main()
