@@ -1,7 +1,4 @@
-a
-b
-c
-a
-b
-b
-a
+Myers diff is an algorithm for comparing sequences.
+It finds a shortest edit sequence.
+The algorithm is useful for text comparison.
+It can identify inserted and deleted lines.
