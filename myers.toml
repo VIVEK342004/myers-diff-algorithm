@@ -5,3 +5,12 @@
 # The grader reads the language below. Do not edit or delete this file.
 # The language is "python", "java" or "cpp".
 language = "python"
+
+[diff]
+algorithm = "myers"
+ignore_whitespace = false
+ignore_case = false
+
+[output]
+show_context = true
+context_lines = 3
