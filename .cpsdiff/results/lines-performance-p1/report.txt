@@ -2,5 +2,5 @@ Test: lines-performance-p1
 Verdict: PASS (pass)
 Problem: none
 Exit code: 0
-Time: 0.17 s (indicative, not the grader)
+Time: 0.35 s (indicative, not the grader)
 Memory: not measured locally

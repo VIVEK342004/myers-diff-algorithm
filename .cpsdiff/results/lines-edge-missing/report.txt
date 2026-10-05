@@ -2,5 +2,5 @@ Test: lines-edge-missing
 Verdict: PASS (pass)
 Problem: none
 Exit code: 2
-Time: 0.12 s (indicative, not the grader)
+Time: 0.27 s (indicative, not the grader)
 Memory: not measured locally

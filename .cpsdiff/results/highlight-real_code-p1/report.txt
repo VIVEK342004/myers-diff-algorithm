@@ -2,5 +2,5 @@ Test: highlight-real_code-p1
 Verdict: PASS (pass)
 Problem: none
 Exit code: 0
-Time: 0.24 s (indicative, not the grader)
+Time: 0.45 s (indicative, not the grader)
 Memory: not measured locally

@@ -2,5 +2,5 @@ Test: lines-basic-p1
 Verdict: PASS (pass)
 Problem: none
 Exit code: 0
-Time: 0.08 s (indicative, not the grader)
+Time: 0.23 s (indicative, not the grader)
 Memory: not measured locally
