@@ -1,13 +1,8 @@
-# cpsdiff results and build output
-.cpsdiff/
 __pycache__/
-*.class
-out/
-mydiff
-mydiff.exe
-
-# editors and systems
+*.pyc
+.venv/
+venv/
+.env
+.pytest_cache/
 .vscode/
 .idea/
-*.swp
-.DS_Store
